@@ -15,6 +15,7 @@ services:
       - ORACLE_SID=FREE
       - ORACLE_PDB=FREEPDB1
       - ORACLE_PWD=${ORACLE_PWD}
+      - ORAENV_ASK=NO
     volumes:
       - ${VOLUMES_DIR}/data:/opt/oracle/oradata
       - ${VOLUMES_DIR}/backup:/opt/oracle/backup
