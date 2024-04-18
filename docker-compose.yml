@@ -1,0 +1,25 @@
+networks:
+  default:
+    name: ${PROJECT_NAME}
+    ipam:
+      config:
+        - subnet: ${SUBNET}
+
+services:
+  oracle:
+    build: docker
+    container_name: "${PROJECT_NAME}_oracle"
+    ports:
+      - "${LOCALHOST_ORACLE_PORT}:1521"
+    environment:
+      - ORACLE_SID=FREE
+      - ORACLE_PDB=FREEPDB1
+      - ORACLE_PWD=${ORACLE_PWD}
+    volumes:
+      - ${VOLUMES_DIR}/data:/opt/oracle/oradata
+      - ${VOLUMES_DIR}/backup:/opt/oracle/backup
+    healthcheck:
+      test: ["CMD", "sqlplus", "-L", "sys/Oracle_123@//localhost:1521/ORCLCDB as sysdba", "@healthcheck.sql"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
